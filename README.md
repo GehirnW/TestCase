@@ -1,6 +1,7 @@
 <tr>
   <td>Latest Release</td>
   <td><img src="https://img.shields.io/pypi/v/WindAdapter.svg" alt="latest release" /></td>
+  <td><img src="https://travis-ci.org/RoxanneYang/TestCase.svg?branch=master" alt="build status" /></td>
 </tr>
 
 
