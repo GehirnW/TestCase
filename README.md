@@ -3,7 +3,7 @@
   <td><img src="https://img.shields.io/pypi/v/WindAdapter.svg" alt="latest release" /></td>
   <td><img src="https://travis-ci.org/RoxanneYang/TestCase.svg?branch=master" alt="build status" /></td>
 </tr>
-
+[![Coverage Status](https://coveralls.io/repos/github/RoxanneYang/TestCase/badge.svg?branch=master)](https://coveralls.io/github/RoxanneYang/TestCase?branch=master)
 
 
 # WindAdapter
