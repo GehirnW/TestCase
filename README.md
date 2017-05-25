@@ -1,9 +1,11 @@
 <tr>
   <td>Latest Release</td>
   <td><img src="https://img.shields.io/pypi/v/WindAdapter.svg" alt="latest release" /></td>
+  <td>Build Status</td>
   <td><img src="https://travis-ci.org/RoxanneYang/TestCase.svg?branch=master" alt="build status" /></td>
+  <td>Coverage</td>
+  <td><img src="https://coveralls.io/repos/github/RoxanneYang/TestCase/badge.svg?branch=master" alt="Coverage Status" /></td>
 </tr>
-[![Coverage Status](https://coveralls.io/repos/github/RoxanneYang/TestCase/badge.svg?branch=master)](https://coveralls.io/github/RoxanneYang/TestCase?branch=master)
 
 
 # WindAdapter
