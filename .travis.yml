@@ -6,6 +6,6 @@ python:
 install:
   - pip install WindAdapter
 # command to run tests
-script: make test
+script: pytest
 after_success:
   - coveralls
