@@ -1,0 +1,23 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+sudo: false
+addons:
+  apt:
+    packages:
+    - libblas-dev
+    - liblapack-dev
+    - gcc
+    - gfortran
+# command to install dependencies
+install:
+  - pip install WindAdapter
+# command to run tests
+script:
+  - python setup.py build_ext --line_trace --inplace
+  - coverage run --rcfile=./.coveragerc WindAdapter/tests/test_api.py
+  - coverage report --rcfile=./.coveragerc -i
+  - coverage html --rcfile=./.coveragerc -i
+after_success:
+  - coveralls
