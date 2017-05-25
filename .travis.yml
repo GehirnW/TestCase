@@ -6,10 +6,6 @@ python:
 install:
   - pip install WindAdapter
 # command to run tests
-script:
-  - python setup.py build_ext --line_trace --inplace
-  - coverage run --rcfile=./.coveragerc WindAdapter/tests/test_api.py
-  - coverage report --rcfile=./.coveragerc -i
-  - coverage html --rcfile=./.coveragerc -i
+script: make test
 after_success:
   - coveralls
