@@ -5,6 +5,7 @@ from setuptools import setup
 import os
 import sys
 import io
+import numpy as np
 
 PACKAGE = 'WindAdapter'
 NAME = 'WindAdapter'
