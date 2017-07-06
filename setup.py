@@ -18,15 +18,8 @@ setup(name=NAME,
       url=URL,
       packages=find_packages(),
       package_data={'': ['*.csv']},
-      install_requires=[
-          'enum34',
-          'mock',
-          'numpy',
-          'pandas',
-          'logbook',
-          'argcheck',
-          'python-decouple>=3.0'
-      ],
+      install_requires=io.open(requirements, encoding='utf8').read(),
+      include_dirs=[np.get_include()],
       classifiers=['Programming Language :: Python',
                    'Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3.5'])
