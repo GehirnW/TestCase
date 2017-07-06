@@ -1,12 +1,15 @@
+<table>
 <tr>
   <td>Latest Release</td>
   <td><img src="https://img.shields.io/pypi/v/WindAdapter.svg" alt="latest release" /></td>
-  <td>Build Status</td>
-  <td><img src="https://travis-ci.org/RoxanneYang/TestCase.svg?branch=master" alt="build status" /></td>
-  <td>Coverage</td>
-  <td><img src="https://coveralls.io/repos/github/RoxanneYang/TestCase/badge.svg?branch=master" alt="Coverage Status" /></td>
 </tr>
 
+
+<tr>
+  <td>Python version</td>
+  <td><img src="https://img.shields.io/badge/python-2.7-blue.svg"/>   <img src="https://img.shields.io/badge/python-3.5-blue.svg"/></td>
+  </tr>
+</table>
 
 # WindAdapter
 
@@ -26,8 +29,14 @@
 -  用户可以在本地自行更新数据字典作为*WindAdpater*引用（方法见下文*reset_data_dict_path*）或者等待本项目后续更新
 
 
-## 使用
+## Quick Start
 
+##### get_universe
+
+``` python
+# 读取2017年1月3日沪深300指数成分股(同时返回对应的权重如果output_weight=True)
+hs300_comp = get_universe('000300.SH', date='20170103', output_weight=True)
+```
 
 ##### factor_help
 
@@ -73,18 +82,50 @@ factor_load('2014-01-01', '2014-07-10', 'close', sec_id='fullA', is_index=True, 
 
 # 读取沪深300成分股从2014年1月至3月，频率为每月(freq=M)的季度(tenor='1Q')收益， 并保存成csv格式
 factor_load('2014-01-01', '2014-03-31', 'return', sec_id='000300.SH', is_index=True, freq='M', tenor='1Q', save_file='HS300_return_1Q.csv')
+```
+*Note*: 返回的数据最近的日期等于入参中的end_date，前推的日期为根据频率(freq)和end_date往前推算的交易日
 
+另外，指数成分股权重也是作为因子，从*factor_loader*读取
+
+``` python
 # 读书指数成分股行业权重: 沪深300的申万一级行业权重分布
 # 由于申万一级行业于2014年2月进行了调整，而wind的行业代码不可回溯，故2014年2月前的指数成分股权重之和不等于1
 factor_load('2014-01-01', '2014-03-31', 'INDUSTRY_WEIGHT_C1', sec_id='000300.SH')
 
-```
-*Note*: 返回的数据最近的日期等于入参中的end_date，前推的日期为根据频率(freq)和end_date往前推算的交易日
 
+2014-12-31	801010.SI	0.52
+            801020.SI	2.79
+            801030.SI	2.37
+            801040.SI	1.42
+            801050.SI	3.28
+            801080.SI	1.56
+            801110.SI	2.80
+            801120.SI	4.23
+            801130.SI	0.32
+            801150.SI	4.71
+            801160.SI	4.06
+            801170.SI	2.89
+            801180.SI	5.08
+            801200.SI	1.98
+            801210.SI	0.21
+            801230.SI	0.45
+            801710.SI	0.73
+            801720.SI	4.66
+            801730.SI	1.74
+            801740.SI	2.19
+            801750.SI	2.09
+            ...
+```
+
+factor_load还可以接受lsit of factor names 进行数据读取
+
+``` python
+factor_load('2014-01-01', '2014-07-10', ['PB', 'MV'], sec_id=['000001.SZ', '000002.SZ'], is_index=False,reset_col_names=True)
+
+```
 <br />
 
-
-其他细节参见[WindAdapter tutorial](/example/tutorial.md) 
+其他细节参见[WindAdapter tutorial](/example/tutorial.ipymd) 
 
 
 ## 依赖

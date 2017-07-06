@@ -2,6 +2,9 @@
 
 import os
 import datetime
+import pandas as pd
+from toolz import merge
+from argcheck import expect_types
 from WindAdapter.factor_loader import FactorLoader
 from WindAdapter.utils import save_data_to_file
 from WindAdapter.utils import print_table
@@ -9,6 +12,7 @@ from WindAdapter.utils import handle_wind_query_exception
 from WindAdapter.custom_logger import CustomLogger
 from WindAdapter.data_provider import WindDataProvider
 from WindAdapter.helper import WindQueryHelper
+from WindAdapter.enums import OutputFormat
 
 LOGGER = CustomLogger()
 WIND_DATA_PRODIVER = WindDataProvider()
@@ -37,20 +41,23 @@ def reset_data_dict_path(path, path_type_abs):
 
 
 @handle_wind_query_exception(LOGGER)
-def get_universe(index_id, date=None):
+def get_universe(index_id, date=None, output_weight=False):
     """
     :param index_id: str, 可以为指数代码或者'fullA'（指全市场股票），不区分大小写
     :param date: str, optional, YYYYMMDD/YYYY-MM-DD，默认为None，即返回最近交易日的成分股列表
-    :return: list, 成分股列表
+    :param output_weight: bool, optional, 是否返回对应的个股权重
+    :return: 如果output_weight=False, 返回list, 成分股列表
+             如果output_weight=True, 返回DataFrame
     """
     LOGGER.info('Loading the constituent stocks of index {0} at date {1}'.
                 format(index_id, datetime.date.today() if date is None else date))
-    ret = WindDataProvider.get_universe(index_id, date)
+    ret = WindDataProvider.get_universe(index_id, date, output_weight)
     LOGGER.info('Number of the loaded constituent stocks is {0}'.format(len(ret)))
     return ret
 
 
 @handle_wind_query_exception(LOGGER)
+@expect_types(factor_name=(str, list))
 def factor_load(start_date, end_date, factor_name, save_file=None, **kwargs):
     """
     :param start_date: str, 读取因子数据的开始日期
@@ -69,13 +76,24 @@ def factor_load(start_date, end_date, factor_name, save_file=None, **kwargs):
                                       False: 直接读取sec_id的因子数据
     :return: pd.DataFrame 整理好的因子数据
     """
-    LOGGER.info('Loading factor data {0}'.format(factor_name))
-    factor_loader = FactorLoader(start_date=start_date,
-                                 end_date=end_date,
-                                 factor_name=factor_name,
-                                 **kwargs)
-    ret = factor_loader.load_data()
-    LOGGER.info('factor data {0} is loaded '.format(factor_name))
+    if isinstance(factor_name, list):
+        kwargs = merge(kwargs, {'output_data_format': OutputFormat.MULTI_INDEX_DF})
+        factor_names = factor_name
+    else:
+        factor_names = [factor_name]
+
+    ret = pd.DataFrame()
+    for factor_name in factor_names:
+        LOGGER.info('Loading factor data {0}'.format(factor_name))
+        factor_loader = FactorLoader(start_date=start_date,
+                                     end_date=end_date,
+                                     factor_name=factor_name,
+                                     **kwargs)
+        factor_data = factor_loader.load_data()
+        LOGGER.info('factor data {0} is loaded '.format(factor_name))
+        ret = pd.concat([ret, factor_data], axis=1)
+    if kwargs.get('reset_col_names'):
+        ret.columns = factor_names
     if save_file:
         save_data_to_file(ret, save_file)
         LOGGER.critical('Data saved in {0}'.format(save_file))
@@ -100,3 +118,5 @@ def factor_details_help():
     data_dict = WIND_QUERY_HELPER.data_dict
     print_table(data_dict, name='Data_Dict')
     return
+
+
