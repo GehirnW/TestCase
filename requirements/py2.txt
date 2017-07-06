@@ -1,6 +1,6 @@
 enum34>=1.0.4
 mock
-numpy>=1.10.1
+numpy
 pandas>=0.18.0
 logbook
 argcheck
