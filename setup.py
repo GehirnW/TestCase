@@ -2,6 +2,9 @@
 
 from setuptools import find_packages
 from setuptools import setup
+import os
+import sys
+import io
 
 PACKAGE = 'WindAdapter'
 NAME = 'WindAdapter'
