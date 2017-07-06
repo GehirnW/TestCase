@@ -14,6 +14,11 @@ AUTHOR = 'iLampard, RoxanneYang'
 URL = 'https://github.com/iLampard/WindAdapter'
 LICENSE = 'MIT'
 
+if sys.version_info > (3, 0, 0):
+    requirements = "requirements/py3.txt"
+else:
+    requirements = "requirements/py2.txt"
+
 setup(name=NAME,
       version=VERSION,
       description=DESCRIPTION,
